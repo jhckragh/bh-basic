@@ -1,0 +1,4 @@
+10 print "Type a number:"
+20 input num
+30 print num * num
+40 end

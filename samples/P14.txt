@@ -1,0 +1,6 @@
+10 let x = 0
+20 if x = 10 then goto 60
+30 print x
+40 let x = x + 1
+50 goto 20
+60 end

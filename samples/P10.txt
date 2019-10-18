@@ -1,0 +1,5 @@
+10 input "Type two numbers: " x, y
+20 print x + y
+30 input "Type another number: " z
+35 print (x + y) * z
+40 end
