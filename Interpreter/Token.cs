@@ -73,7 +73,6 @@ namespace Basic
         ParenL,
         ParenR,
         Colon,
-        Eol,
-        Error
+        Eol
     }
 }

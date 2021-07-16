@@ -56,17 +56,19 @@ namespace Basic
                 return LexStringLiteral();
             }
 
-            TokenType type = Token.LookupSymbol(CurrentChar) ?? TokenType.Error;
             string text = char.ToString(CurrentChar);
-            
-            if (type == TokenType.Error)
+
+            if (Token.LookupSymbol(CurrentChar) is TokenType type)
             {
-                text = $"character '{text}' is not allowed here";
+                Advance();
+                return new Token(type, text, _lineNumber, _columnNumber - 1);
             }
 
-            Advance();
-
-            return new Token(type, text, _lineNumber, _columnNumber - 1);
+            throw new SyntaxErrorException(
+                $"character '{text}' is not allowed here",
+                _lineNumber,
+                _columnNumber
+            );
         }
 
         private Token LexIdentifierOrKeyword()
@@ -111,8 +113,11 @@ namespace Basic
             {
                 if (CurrentChar == '\n')
                 {
-                    string err = "line end in string literal";
-                    return new Token(TokenType.Error, err, _lineNumber, column);
+                    throw new SyntaxErrorException(
+                        "line end in string literal",
+                        _lineNumber,
+                        column
+                    );
                 }
 
                 text.Append(CurrentChar);
@@ -121,8 +126,11 @@ namespace Basic
 
             if (CurrentChar != '"')
             {
-                string err = "unclosed string literal";
-                return new Token(TokenType.Error, err, _lineNumber, column);
+                throw new SyntaxErrorException(
+                    "unclosed string literal",
+                    _lineNumber,
+                    column
+                );
             }
 
             Advance(); // Skip closing quote
