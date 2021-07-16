@@ -41,13 +41,8 @@ namespace Basic
         {
             Parse();
 
-            while (CurrentCommand != null)
+            while (CurrentCommand is not Command.End)
             {
-                if (CurrentCommand is Command.End)
-                {
-                    break;
-                }
-
                 Run(CurrentCommand);
             }
         }
