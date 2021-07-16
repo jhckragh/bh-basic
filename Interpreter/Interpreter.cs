@@ -60,13 +60,6 @@ namespace Basic
             while ((line = _input.ReadLine()) != null)
             {
                 lineNumber++;
-
-                string trimmed = line.Trim();
-                if (trimmed == "" || trimmed.StartsWith("//"))
-                {
-                    continue;
-                }
-
                 var lexer = new LineLexer(line, lineNumber);
                 var tokens = new List<Token>();
                 while (true)

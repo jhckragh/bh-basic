@@ -19,12 +19,18 @@ namespace Basic
 
         public Command Parse()
         {
+            if (CurrentToken.Type == TokenType.Eol)
+            {
+                return new Command.Empty(-1); // Empty line gets phony line number
+            }
+
             bool startsWithInt = (CurrentToken.Type == TokenType.IntegerLiteral)
                 && int.TryParse(CurrentToken.Text, out _writtenLineNumber);
             if (!startsWithInt)
             {
                 SyntaxError("line must start with an integer line number");
             }
+
             AcceptIt();
             Command cmd = ParseCommand();
             Accept(TokenType.Eol);
