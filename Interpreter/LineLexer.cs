@@ -23,6 +23,19 @@ namespace Basic
                 Advance();
             }
 
+            if (CurrentChar == '/')
+            {
+                Advance();
+                if (CurrentChar == '/')
+                {
+                    _columnNumber = _line.Length;
+                }
+                else
+                {
+                    return new Token(TokenType.Div, "/", _lineNumber, _columnNumber - 1);
+                }
+            }
+
             if (CurrentChar == Eol)
             {
                 return new Token(TokenType.Eol, "<eol>", _lineNumber, _line.Length);
