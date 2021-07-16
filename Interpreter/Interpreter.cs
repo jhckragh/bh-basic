@@ -56,6 +56,8 @@ namespace Basic
 
         private void Parse()
         {
+            var progLines = new SortedDictionary<int, Command>();
+
             int lineNumber = 0;
 
             string? line;
@@ -75,12 +77,11 @@ namespace Basic
                 }
 
                 var cmd = new LineParser(tokens).Parse();
-                _program.Add(cmd);
+                progLines[cmd.LineNumber] = cmd;
             }
 
-            _program.Sort((cmd1, cmd2) => cmd1.LineNumber.CompareTo(cmd2.LineNumber));
+            _program.AddRange(progLines.Values);
 
-            // TODO: Handle the case where several lines have the same written line number
             for (int i = 0; i < _program.Count; i++)
             {
                 var cmd = _program[i];

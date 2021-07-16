@@ -331,6 +331,35 @@ namespace Tests
         }
 
         [Test]
+        public void TestDupLines1()
+        {
+            var input = @"
+10 print 123
+10 print 123
+20 end";
+            var output = new StringWriter();
+            var interpreter = new Interpreter(new StringReader(input), output);
+            interpreter.Run();
+            Assert.AreEqual("123" + Endl, output.ToString());
+        }
+
+        [Test]
+        public void TestDupLines2()
+        {
+            var input = @"
+10 let x = 0
+20 print x
+30 let y = 1
+20 print x + 5
+40 print y
+50 end";
+            var output = new StringWriter();
+            var interpreter = new Interpreter(new StringReader(input), output);
+            interpreter.Run();
+            Assert.AreEqual($"5{Endl}1{Endl}", output.ToString());
+        }
+
+        [Test]
         public void TestProgram1()
         {
             var input = @"10 print ""Table of Squares""
