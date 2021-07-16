@@ -160,7 +160,7 @@ namespace Basic
             int to = Eval(cmd.To);
             _variables[cmd.VariableName] = from;
 
-            // Find matching "next"
+            // Find matching "next" in case this for should be skipped
             int nextIdx = _pc + 1;
             int balance = 1;
             while (nextIdx < _program.Count && balance > 0)
@@ -338,7 +338,7 @@ namespace Basic
             return (x != -1) ? (char) x : '\0';
         }
 
-        private void Error(string msg)
+        private void Error(string msg) // TODO: Introduce custom exception type?
         {
             int line = CurrentCommand.LineNumber;
             throw new ApplicationException($"line {line}: {msg}");
