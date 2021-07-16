@@ -1,0 +1,9 @@
+10 let N = 3
+20 for n = 2 to N
+30   let is_prime = 1
+40   for d = 2 to n - 1
+50     if n % d = 0 then let is_prime = 0
+60     next d
+70   if is_prime then print n
+80   next n
+90 end

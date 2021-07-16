@@ -1,0 +1,13 @@
+// Comment 1
+10 print 100
+
+// Comment 2
+20 print 200
+
+// Comment 3a
+// Comment 3b
+
+// Comment 4
+30 print 300
+
+// Comment 5

@@ -1,0 +1,5 @@
+10 print "Hello"
+20 let foo = 5
+30 let bar = foo * foo
+40 print bar
+50 end

@@ -1,0 +1,7 @@
+10 input "Input size: " num
+20 for i = 1 to num
+30 for j = i to num
+40 print i;" ";j
+50 next j
+60 next i
+70 end
