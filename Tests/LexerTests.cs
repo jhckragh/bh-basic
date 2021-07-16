@@ -201,6 +201,56 @@ namespace Tests
         }
 
         [Test]
+        public void TestComment1()
+        {
+            var lineNumber = 1;
+            var input = @"100 print i // this is a comment";
+            var lexer = new LineLexer(input, lineNumber);
+
+            var expected = new[] {
+                new Token(TokenType.IntegerLiteral, "100", lineNumber, 0),
+                new Token(TokenType.Print, "print", lineNumber, 4),
+                new Token(TokenType.Identifier, "i", lineNumber, 10)
+            };
+
+            foreach (var token in expected)
+            {
+                Assert.AreEqual(token, lexer.NextToken());
+            }
+
+            Assert.AreEqual(TokenType.Eol, lexer.NextToken().Type);
+        }
+
+        [Test]
+        public void TestComment2()
+        {
+            var lineNumber = 1;
+            var input = @"//100 print i";
+            var lexer = new LineLexer(input, lineNumber);
+            Assert.AreEqual(TokenType.Eol, lexer.NextToken().Type);
+        }
+
+        [Test]
+        public void TestComment3()
+        {
+            var lineNumber = 1;
+            var input = @"2+//2";
+            var lexer = new LineLexer(input, lineNumber);
+
+            var expected = new[] {
+                new Token(TokenType.IntegerLiteral, "2", lineNumber, 0),
+                new Token(TokenType.Plus, "+", lineNumber, 1)
+            };
+
+            foreach (var token in expected)
+            {
+                Assert.AreEqual(token, lexer.NextToken());
+            }
+
+            Assert.AreEqual(TokenType.Eol, lexer.NextToken().Type);
+        }
+
+        [Test]
         public void TestSymbols()
         {
             var lineNumber = 1;

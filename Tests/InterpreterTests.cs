@@ -294,6 +294,31 @@ namespace Tests
         }
 
         [Test]
+        public void TestComment4()
+        {
+            var input = @"10 print 1  // comment";
+            var output = new StringWriter();
+            var interpreter = new Interpreter(new StringReader(input), output);
+            interpreter.Run();
+            Assert.AreEqual($"1{Endl}", output.ToString());
+        }
+
+        [Test]
+        public void TestComment5()
+        {
+            var input = @"//10 print 1  // comment
+10 let x = 1
+20 let y = 2  //xyz
+30 print x//+y
+40 print x+y //asd
+50 end";
+            var output = new StringWriter();
+            var interpreter = new Interpreter(new StringReader(input), output);
+            interpreter.Run();
+            Assert.AreEqual($"1{Endl}3{Endl}", output.ToString());
+        }
+
+        [Test]
         public void TestProgram1()
         {
             var input = @"10 print ""Table of Squares""
