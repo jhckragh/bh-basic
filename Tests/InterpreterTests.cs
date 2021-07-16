@@ -197,6 +197,18 @@ namespace Tests
         }
 
         [Test]
+        public void TestForEmpty()
+        {
+            var input = @"10 for i=1 to 3
+20 next i
+30 end";
+            var output = new StringWriter();
+            var interpreter = new Interpreter(new StringReader(input), output);
+            interpreter.Run();
+            Assert.AreEqual("", output.ToString());
+        }
+
+        [Test]
         public void TestForConstToConst1()
         {
             var input = @"10 for i=1 to 3

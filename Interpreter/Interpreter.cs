@@ -159,6 +159,7 @@ namespace Basic
             int from = Eval(cmd.From);
             int to = Eval(cmd.To);
             _variables[cmd.VariableName] = from;
+            _forCmds.Push(new Command.RealizedFor(cmd.LineNumber, cmd.VariableName, from, to));
 
             // Find matching "next" in case this for should be skipped
             int nextIdx = _pc + 1;
@@ -173,11 +174,10 @@ namespace Basic
 
             if (from > to)
             {
-                _pc = nextIdx;
+                _pc = nextIdx - 1;
             }
             else
             {
-                _forCmds.Push(new Command.RealizedFor(cmd.LineNumber, cmd.VariableName, from, to));
                 Step();
             }
 
