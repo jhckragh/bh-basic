@@ -28,7 +28,11 @@ namespace Basic
                 && int.TryParse(CurrentToken.Text, out _writtenLineNumber);
             if (!startsWithInt)
             {
-                SyntaxError("line must start with an integer line number");
+                throw new SyntaxErrorException(
+                    "line must start with an integer line number",
+                    CurrentToken.Line,
+                    CurrentToken.Column
+                );
             }
 
             AcceptIt();
@@ -59,9 +63,11 @@ namespace Basic
                 default: break;
             }
 
-            SyntaxError("expected a keyword (let, print, ...) but saw " + CurrentToken.Text);
-
-            return null; // Shouldn't be reachable
+            throw new SyntaxErrorException(
+                $"expected a keyword (let, print, ...) but saw '{CurrentToken.Text}'",
+                CurrentToken.Line,
+                CurrentToken.Column
+            );
         }
 
         private Command ParseLet()
@@ -101,7 +107,7 @@ namespace Basic
         {
             AcceptIt(); // Consume "input"
 
-            string prompt = null;
+            string? prompt = null;
             if (CurrentToken.Type == TokenType.StringLiteral)
             {
                 prompt = CurrentToken.Text;
@@ -240,11 +246,11 @@ namespace Basic
                 default: break;
             }
 
-            string illegal = CurrentToken.Text;
-            string err = $"expected variable, literal, '(' or '-', but saw '{illegal}'";
-            SyntaxError(err);
-
-            return null;
+            throw new SyntaxErrorException(
+                $"expected variable, literal, '(' or '-', but saw '{CurrentToken.Text}'",
+                CurrentToken.Line,
+                CurrentToken.Column
+            );
         }
 
         private Operator GetOperator(Token token)
@@ -311,17 +317,14 @@ namespace Basic
             Token t = CurrentToken;
             if (CurrentToken.Type != expectedType)
             {
-                SyntaxError($"expected {expectedType} but saw {CurrentToken.Type}");
+                throw new SyntaxErrorException(
+                    $"expected {expectedType} but saw {CurrentToken.Type}",
+                    CurrentToken.Line,
+                    CurrentToken.Column
+                );
             }
             _cursor++;
             return t;
-        }
-
-        private void SyntaxError(string msg)
-        {
-            Token t = CurrentToken;
-            string fullMsg = $"[{t.Line}:{t.Column}] syntax error: {msg}";
-            throw new ApplicationException(fullMsg);
         }
     }
 }

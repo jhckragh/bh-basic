@@ -9,6 +9,8 @@ namespace Basic
 {
     public class Interpreter
     {
+        private static readonly Command End = new Command.End(-1);
+
         private readonly TextReader _input;
         private readonly TextWriter _output;
         private readonly List<Command> _program;
@@ -56,8 +58,8 @@ namespace Basic
         {
             int lineNumber = 0;
 
-            string line;
-            while ((line = _input.ReadLine()) != null)
+            string? line;
+            while ((line = _input.ReadLine()) is not null)
             {
                 lineNumber++;
                 var lexer = new LineLexer(line, lineNumber);
@@ -298,7 +300,7 @@ namespace Basic
 
         // --------
 
-        private Command CurrentCommand => (_pc < _program.Count) ? _program[_pc] : null;
+        private Command CurrentCommand => (_pc < _program.Count) ? _program[_pc] : End;
 
         private void Step()
         {
