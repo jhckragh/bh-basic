@@ -78,6 +78,19 @@ namespace Tests
         }
 
         [Test]
+        public void TestPrintBadList1()
+        {
+            var input = new List<Token> {
+                new Token(TokenType.IntegerLiteral, "20", 1, 0),
+                new Token(TokenType.Print, "print", 1, 3),
+                new Token(TokenType.IntegerLiteral, "2", 1, 9),
+                new Token(TokenType.IntegerLiteral, "2", 1, 11)
+            };
+
+            Assert.Throws<SyntaxErrorException>(() => new LineParser(input).Parse());
+        }
+
+        [Test]
         public void TestInputSingle()
         {
             var input = new List<Token> {

@@ -84,22 +84,22 @@ namespace Basic
         {
             AcceptIt(); // Consume "print"
             List<Expression> values = new List<Expression>();
-            while (CurrentToken.Type != TokenType.Eol)
+            if (CurrentToken.Type != TokenType.Eol)
             {
-                switch (CurrentToken.Type)
+                values.Add(ParseExpression());
+                while (CurrentToken.Type == TokenType.Comma ||
+                       CurrentToken.Type == TokenType.Semicolon)
                 {
-                    case TokenType.Comma:
+                    if (CurrentToken.Type == TokenType.Comma)
+                    {
                         values.Add(new Expression.StringLiteral("\t"));
-                        AcceptIt();
-                        break;
-                    case TokenType.Semicolon:
-                        AcceptIt();
-                        break;
-                    default:
-                        values.Add(ParseExpression());
-                        break;
+                    }
+
+                    AcceptIt();
+                    values.Add(ParseExpression());
                 }
             }
+
             return new Command.Print(_writtenLineNumber, values);
         }
 
