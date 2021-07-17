@@ -5,12 +5,12 @@ namespace Basic
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             if (args.Length != 1)
             {
                 Console.WriteLine("Usage: dotnet run -- SOURCEFILE");
-                return;
+                return 1;
             }
 
             using (var inputStream = File.OpenText(args[0]))
@@ -18,8 +18,23 @@ namespace Basic
             {
                 outputStream.AutoFlush = true;
                 var interpreter = new Interpreter(inputStream, outputStream);
-                interpreter.Run();
-            }      
+                try
+                {
+                    interpreter.Run();
+                }
+                catch (SyntaxErrorException e)
+                {
+                    Console.Error.WriteLine($"[{e.Line}:{e.Column}] syntax error: " + e.Message);
+                    return 1;
+                }
+                catch (SemanticErrorException e)
+                {
+                    Console.Error.WriteLine($"error on line {e.Line}: " + e.Message);
+                    return 1;
+                }
+            }
+
+            return 0; 
         }
     }
 }
