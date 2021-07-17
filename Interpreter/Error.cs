@@ -19,4 +19,20 @@ namespace Basic
             Column = column;
         }
     }
+
+    public class SemanticErrorException : Exception
+    {
+        public int Line { get; }
+
+        public SemanticErrorException() {}
+
+        public SemanticErrorException(string message) : base(message) {}
+
+        public SemanticErrorException(string message, Exception inner) : base(message, inner) {}
+
+        public SemanticErrorException(string message, int line) : base(message)
+        {
+            Line = line;
+        }
+    }
 }

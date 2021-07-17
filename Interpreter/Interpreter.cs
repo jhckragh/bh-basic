@@ -166,7 +166,13 @@ namespace Basic
                 if (_program[nextIdx] is Command.Next) balance--;
                 nextIdx++;
             }
-            if (balance != 0) Error("this for is not matched by a next command");
+            if (balance != 0)
+            {
+                throw new SemanticErrorException(
+                    "this for is not matched by a next command",
+                    cmd.LineNumber
+                );
+            }
 
             if (from > to)
             {
@@ -184,13 +190,16 @@ namespace Basic
         {
             if (_forCmds.Count == 0)
             {
-                Error("next has no matching for");
+                throw new SemanticErrorException("next has no matching for", cmd.LineNumber);
             }
 
             var matchingFor = _forCmds.Peek();
             if (matchingFor.VariableName != cmd.VariableName)
             {
-                Error("next uses wrong variable name or is nested incorrectly");
+                throw new SemanticErrorException(
+                    "next uses wrong variable name or is nested incorrectly",
+                    cmd.LineNumber
+                );
             }
 
             int counterValue = _variables[matchingFor.VariableName];
@@ -239,7 +248,10 @@ namespace Basic
         {
             if (_gosubCmds.Count == 0)
             {
-                Error("return has no matching gosub");
+                throw new SemanticErrorException(
+                    "return has no matching gosub",
+                    cmd.LineNumber
+                );
             }
 
             var parent = _gosubCmds.Pop();
@@ -260,7 +272,10 @@ namespace Basic
             {
                 if (!_variables.ContainsKey(ident.VariableName))
                 {
-                    Error($"name '{ident.VariableName}' is not defined");
+                    throw new SemanticErrorException(
+                        $"name '{ident.VariableName}' is not defined",
+                        CurrentCommand.LineNumber
+                    );
                 }
 
                 return _variables[ident.VariableName];
@@ -271,7 +286,10 @@ namespace Basic
             }
             else if (exp is Expression.StringLiteral)
             {
-                Error("expected integer value but found string");
+                throw new SemanticErrorException(
+                    "expected integer value but found string",
+                    CurrentCommand.LineNumber
+                );
             }
             else if (exp is Expression.Binary binExp)
             {
@@ -287,11 +305,14 @@ namespace Basic
                     Operator.Lt => (left < right) ? 1 : 0,
                     Operator.Eq => (left == right) ? 1 : 0,
                     Operator.Gt => (left > right) ? 1 : 0,
-                    _ => throw new ApplicationException($"line {CurrentCommand.LineNumber}: unsupported operator " + binExp.Operator)
+                    _ => throw new SemanticErrorException(
+                        "unsupported operator " + binExp.Operator,
+                        CurrentCommand.LineNumber
+                    )
                 };
             }
 
-            throw new ApplicationException($"line {CurrentCommand.LineNumber}: internal error");
+            throw new SemanticErrorException("internal error", CurrentCommand.LineNumber);
         }
 
         // --------
@@ -332,12 +353,6 @@ namespace Basic
         {
             int x = _intSource.Read();
             return (x != -1) ? (char) x : '\0';
-        }
-
-        private void Error(string msg) // TODO: Introduce custom exception type?
-        {
-            int line = CurrentCommand.LineNumber;
-            throw new ApplicationException($"line {line}: {msg}");
         }
     }
 }
