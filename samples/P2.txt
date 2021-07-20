@@ -1,3 +1,0 @@
-10 print "Hello World"
-11 print "Goodbye World"
-20 end

@@ -1,3 +1,0 @@
-10 input "Type two numbers: " x, y
-20 print x + y
-40 end
