@@ -1,0 +1,6 @@
+10 let res = 1
+20 for i = 1 to 11
+30   print res
+40   let res = 2 * res
+50   next i
+60 end

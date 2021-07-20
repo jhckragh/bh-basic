@@ -1,0 +1,9 @@
+10 let a = 0
+20 let b = 1
+30 for i = 1 to 21
+40   print a
+50   let t = b
+60   let b = a + b
+70   let a = t
+80   next i
+90 end
