@@ -1,0 +1,5 @@
+10 print "Hello"
+20 goto 40
+30 print "This is not shown"
+40 print "This is shown"
+50 end

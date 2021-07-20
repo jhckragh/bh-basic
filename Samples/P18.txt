@@ -1,0 +1,7 @@
+10 input x
+15 print "x = "; x
+20 if x > 0 then goto 100
+30 print "x is negative."
+50 goto 200
+100 print "x is positive."
+200 end
